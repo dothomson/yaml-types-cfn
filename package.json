@@ -1,0 +1,52 @@
+{
+  "name": "yaml-types-cfn",
+  "version": "1.0.0",
+  "description": "AWS CloudFormation Template types for yaml package - intrinsic function tags support",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "yaml",
+    "cloudformation",
+    "aws",
+    "intrinsic-functions",
+    "cfn"
+  ],
+  "author": "Douglas Thomson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dothomson/yaml-types-cfn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dothomson/yaml-types-cfn/issues"
+  },
+  "homepage": "https://github.com/dothomson/yaml-types-cfn#readme",
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4",
+    "yaml": "^2.8.3"
+  },
+  "peerDependencies": {
+    "yaml": "^2.0"
+  },
+  "dependencies": {
+    "yaml-types": "^0.4.0"
+  },
+  "type": "module"
+}
