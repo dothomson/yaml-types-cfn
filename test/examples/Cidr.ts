@@ -1,0 +1,87 @@
+export const Cidr = [
+  {
+    yaml: `Resources:
+  ExampleVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+  IPv6CidrBlock:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      AmazonProvidedIpv6CidrBlock: true
+      VpcId: !Ref ExampleVpc
+  ExampleSubnet:
+    Type: AWS::EC2::Subnet
+    DependsOn: IPv6CidrBlock
+    Properties:
+      AssignIpv6AddressOnCreation: true
+      CidrBlock: !Select
+        - 0
+        - !Cidr
+          - !GetAtt ExampleVpc.CidrBlock
+          - 1
+          - 8
+      Ipv6CidrBlock: !Select
+        - 0
+        - !Cidr
+          - !Select
+            - 0
+            - !GetAtt ExampleVpc.Ipv6CidrBlocks
+          - 1
+          - 64
+      VpcId: !Ref ExampleVpc
+`,
+    json: {
+      Resources: {
+        ExampleVpc: {
+          Type: "AWS::EC2::VPC",
+          Properties: { CidrBlock: "10.0.0.0/16" },
+        },
+        IPv6CidrBlock: {
+          Type: "AWS::EC2::VPCCidrBlock",
+          Properties: {
+            AmazonProvidedIpv6CidrBlock: true,
+            VpcId: { Ref: "ExampleVpc" },
+          },
+        },
+        ExampleSubnet: {
+          Type: "AWS::EC2::Subnet",
+          DependsOn: "IPv6CidrBlock",
+          Properties: {
+            AssignIpv6AddressOnCreation: true,
+            CidrBlock: {
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Cidr": [
+                    { "Fn::GetAtt": ["ExampleVpc", "CidrBlock"] },
+                    1,
+                    8,
+                  ],
+                },
+              ],
+            },
+            Ipv6CidrBlock: {
+              "Fn::Select": [
+                0,
+                {
+                  "Fn::Cidr": [
+                    {
+                      "Fn::Select": [
+                        0,
+                        { "Fn::GetAtt": ["ExampleVpc", "Ipv6CidrBlocks"] },
+                      ],
+                    },
+                    1,
+                    64,
+                  ],
+                },
+              ],
+            },
+            VpcId: { Ref: "ExampleVpc" },
+          },
+        },
+      },
+    },
+  },
+];
